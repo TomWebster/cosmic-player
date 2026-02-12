@@ -33,10 +33,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. User can adjust volume with slider and mute/unmute audio
   5. Playlist auto-advances through tracks and loops back to start after the last track
 
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD during phase planning
+- [ ] 01-01-PLAN.md — Project foundation: HTML scaffold, CSS layout, playlist JSON, DPI-aware canvas renderer
+- [ ] 01-02-PLAN.md — Audio playback engine, splash screen integration, control wiring, human verification
 
 ### Phase 2: Canvas Scene & Animation
 **Goal**: Full-viewport animated cosmic scene renders smoothly without audio integration
@@ -97,7 +98,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Audio Playback | 0/TBD | Not started | - |
+| 1. Foundation & Audio Playback | 0/2 | Planning complete | - |
 | 2. Canvas Scene & Animation | 0/TBD | Not started | - |
 | 3. Audio Visualization | 0/TBD | Not started | - |
 | 4. Track Info & Polish | 0/TBD | Not started | - |
