@@ -1,106 +1,115 @@
 /**
- * Main entry point
- * Wires together canvas, audio player, splash screen, and controls
+ * Main — wires canvas, audio, splash, and controls
  */
 
-import { initCanvas } from './canvasRenderer.js';
+import { initCanvas, setWarp } from './canvasRenderer.js';
 import { createAudioPlayer } from './audioPlayer.js';
 import { initSplash } from './splashScreen.js';
 
-// Module scripts are deferred — DOM is ready when this executes
-// Initialize canvas renderer
 initCanvas();
 
-// Get DOM elements
-const audioElement = document.getElementById('audio-player');
-const enterButton = document.getElementById('enter-button');
-const splashElement = document.getElementById('splash');
-const prevBtn = document.getElementById('prev-btn');
-const nextBtn = document.getElementById('next-btn');
+const audioEl = document.getElementById('audio-player');
+const controls = document.getElementById('controls');
 const volumeSlider = document.getElementById('volume-slider');
-const scrubBackBtn = document.getElementById('scrub-back-btn');
-const scrubFwdBtn = document.getElementById('scrub-fwd-btn');
-const controlsContainer = document.getElementById('controls');
+const player = createAudioPlayer(audioEl);
 
-// Create audio player instance
-const player = createAudioPlayer(audioElement);
+try { await player.loadPlaylist(); } catch {}
 
-// Load playlist eagerly (before user clicks, for instant playback)
-try {
-  await player.loadPlaylist();
-  console.log('Playlist preloaded successfully');
-} catch (error) {
-  console.error('Failed to preload playlist:', error);
+initSplash(
+  document.getElementById('enter-button'),
+  document.getElementById('splash'),
+  async () => {
+    player.initAudio();
+    controls.classList.remove('hidden');
+    player.loadTrack(0);
+    await player.play();
+  }
+);
+
+// Volume helpers
+function getUserVolume() { return parseFloat(volumeSlider.value); }
+function duckVolume(level) { player.setVolume(getUserVolume() * level); }
+function restoreVolume() { player.setVolume(getUserVolume()); }
+
+// Track skip — always 1 second, scrub through remaining/elapsed time
+const SKIP_DURATION = 1; // seconds
+let skipInterval = null;
+let skipTimeout = null;
+
+function beginSkip(dir) {
+  if (skipInterval) return;
+  const dur = audioEl.duration || 0;
+  const t = audioEl.currentTime || 0;
+  if (!dur) { dir > 0 ? player.nextTrack() : player.previousTrack(); return; }
+
+  const timeToSkip = dir > 0 ? (dur - t) : t;
+  const scrubRate = timeToSkip / SKIP_DURATION;
+
+  // Fixed high warp — always dramatic
+  setWarp(dir > 0 ? 12 : -10);
+  duckVolume(0.08);
+
+  skipInterval = setInterval(() => {
+    const step = scrubRate * 0.05 * dir;
+    const next = audioEl.currentTime + step;
+    if (dir > 0 && next >= dur) { finishSkip(dir); return; }
+    if (dir < 0 && next <= 0) { finishSkip(dir); return; }
+    audioEl.currentTime = Math.max(0, Math.min(next, dur));
+  }, 50);
+
+  skipTimeout = setTimeout(() => finishSkip(dir), SKIP_DURATION * 1000 + 100);
 }
 
-// Initialize splash screen with onEnter callback
-initSplash(enterButton, splashElement, async () => {
-  // Create AudioContext inside user gesture (required for autoplay policy)
-  player.initAudio();
+function finishSkip(dir) {
+  clearInterval(skipInterval);
+  clearTimeout(skipTimeout);
+  skipInterval = null;
+  skipTimeout = null;
+  setWarp(1);
+  restoreVolume();
+  dir > 0 ? player.nextTrack() : player.previousTrack();
+}
 
-  // Show controls immediately
-  controlsContainer.classList.remove('hidden');
+document.getElementById('prev-btn').addEventListener('click', () => beginSkip(-1));
+document.getElementById('next-btn').addEventListener('click', () => beginSkip(1));
 
-  // Load first track and start playback
-  player.loadTrack(0);
-  await player.play();
-
-  console.log('Entered immersive experience');
-});
-
-// Wire control buttons
-prevBtn.addEventListener('click', () => {
-  player.previousTrack();
-});
-
-nextBtn.addEventListener('click', () => {
-  player.nextTrack();
-});
-
-// Wire volume slider
+// Volume slider
 volumeSlider.addEventListener('input', (e) => {
-  const volume = parseFloat(e.target.value);
-  player.setVolume(volume);
+  player.setVolume(parseFloat(e.target.value));
 });
 
-// Wire scrub buttons — hold to scrub smoothly
-const SCRUB_RATE = 10; // seconds per second of scrubbing
-const SCRUB_INTERVAL = 50; // ms between updates
+// Scrub — hold to scrub + sustained warp + gentle volume duck
+const SCRUB_RATE = 10;
+let scrubInterval = null;
 
-function startScrub(direction) {
-  const step = (SCRUB_RATE * SCRUB_INTERVAL) / 1000;
-  return setInterval(() => {
-    const newTime = audioElement.currentTime + (step * direction);
-    audioElement.currentTime = Math.max(0, Math.min(newTime, audioElement.duration || 0));
-  }, SCRUB_INTERVAL);
-}
-
-let scrubTimer = null;
-
-function beginScrub(direction) {
-  if (scrubTimer) return;
-  // Immediate first jump
-  audioElement.currentTime = Math.max(0, Math.min(audioElement.currentTime + (5 * direction), audioElement.duration || 0));
-  scrubTimer = startScrub(direction);
+function beginScrub(dir) {
+  if (scrubInterval) return;
+  audioEl.currentTime = Math.max(0, Math.min(audioEl.currentTime + 5 * dir, audioEl.duration || 0));
+  setWarp(dir > 0 ? 4 : -3);
+  duckVolume(0.35);
+  scrubInterval = setInterval(() => {
+    const t = audioEl.currentTime + (SCRUB_RATE * 0.05) * dir;
+    audioEl.currentTime = Math.max(0, Math.min(t, audioEl.duration || 0));
+  }, 50);
 }
 
 function endScrub() {
-  if (scrubTimer) {
-    clearInterval(scrubTimer);
-    scrubTimer = null;
-  }
+  if (!scrubInterval) return;
+  clearInterval(scrubInterval);
+  scrubInterval = null;
+  setWarp(1);
+  restoreVolume();
 }
 
-scrubBackBtn.addEventListener('mousedown', () => beginScrub(-1));
-scrubBackBtn.addEventListener('mouseup', endScrub);
-scrubBackBtn.addEventListener('mouseleave', endScrub);
-scrubFwdBtn.addEventListener('mousedown', () => beginScrub(1));
-scrubFwdBtn.addEventListener('mouseup', endScrub);
-scrubFwdBtn.addEventListener('mouseleave', endScrub);
+const scrubBack = document.getElementById('scrub-back-btn');
+const scrubFwd = document.getElementById('scrub-fwd-btn');
+scrubBack.addEventListener('mousedown', () => beginScrub(-1));
+scrubBack.addEventListener('mouseup', endScrub);
+scrubBack.addEventListener('mouseleave', endScrub);
+scrubFwd.addEventListener('mousedown', () => beginScrub(1));
+scrubFwd.addEventListener('mouseup', endScrub);
+scrubFwd.addEventListener('mouseleave', endScrub);
 
-// Register track change callback
 player.onTrackChange((track) => {
   console.log(`Now playing: ${track.title} - ${track.artist}`);
 });
-
-console.log('Application initialized');

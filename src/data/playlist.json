@@ -36,25 +36,11 @@
       "filePath": "/audio/20250709-odnxox-seq3.mp3"
     },
     {
-      "title": "20250731-e1",
-      "artist": "Unknown",
-      "album": "Cosmic Player",
-      "duration": 640,
-      "filePath": "/audio/20250731-e1.mp3"
-    },
-    {
       "title": "20250731-e2",
       "artist": "Unknown",
       "album": "Cosmic Player",
       "duration": 640,
       "filePath": "/audio/20250731-e2.mp3"
-    },
-    {
-      "title": "20250731-e3",
-      "artist": "Unknown",
-      "album": "Cosmic Player",
-      "duration": 640,
-      "filePath": "/audio/20250731-e3.mp3"
     },
     {
       "title": "20250802-e2",
@@ -69,13 +55,6 @@
       "album": "Cosmic Player",
       "duration": 379,
       "filePath": "/audio/20250804-e2.mp3"
-    },
-    {
-      "title": "20251220-JT1-e5",
-      "artist": "Unknown",
-      "album": "Cosmic Player",
-      "duration": 427,
-      "filePath": "/audio/20251220-JT1-e5.mp3"
     },
     {
       "title": "20260103_1",
@@ -118,13 +97,6 @@
       "album": "Cosmic Player",
       "duration": 512,
       "filePath": "/audio/x0x - live.mp3"
-    },
-    {
-      "title": "x0x (20250802-e1)",
-      "artist": "Unknown",
-      "album": "Cosmic Player",
-      "duration": 205,
-      "filePath": "/audio/x0x (20250802-e1).mp3"
     }
   ]
 }
