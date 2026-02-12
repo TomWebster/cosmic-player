@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cosmic Player</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <!-- Fullscreen canvas background -->
+  <canvas id="canvas"></canvas>
+
+  <!-- Splash screen overlay -->
+  <div id="splash">
+    <button id="enter-button">Enter</button>
+  </div>
+
+  <!-- Hidden audio element (no native controls) -->
+  <audio id="audio-player"></audio>
+
+  <!-- Controls (initially hidden) -->
+  <div id="controls" class="hidden">
+    <button id="prev-btn">Previous</button>
+    <button id="next-btn">Next</button>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" aria-label="Volume">
+    <button id="mute-btn">Mute</button>
+  </div>
+
+  <!-- Scripts loaded as ES modules -->
+  <script type="module" src="scripts/canvasRenderer.js"></script>
+  <script type="module" src="scripts/audioPlayer.js"></script>
+  <script type="module" src="scripts/splashScreen.js"></script>
+  <script type="module" src="scripts/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "tracks": [
+    {
+      "title": "Stellar Drift",
+      "artist": "Cosmic Ensemble",
+      "album": "Infinite Horizons",
+      "duration": 245,
+      "filePath": "/audio/sample-track-01.mp3"
+    },
+    {
+      "title": "Nebula Dreams",
+      "artist": "Space Wanderer",
+      "album": "Deep Space Chronicles",
+      "duration": 312,
+      "filePath": "/audio/sample-track-02.mp3"
+    },
+    {
+      "title": "Gravity's Pull",
+      "artist": "Orbital Collective",
+      "album": "The Dark Matter Sessions",
+      "duration": 198,
+      "filePath": "/audio/sample-track-03.mp3"
+    },
+    {
+      "title": "Cosmic Echoes",
+      "artist": "Void Explorers",
+      "album": "Beyond the Event Horizon",
+      "duration": 267,
+      "filePath": "/audio/sample-track-04.mp3"
+    }
+  ]
+}
