@@ -151,18 +151,16 @@ export function createAudioPlayer(audioElement) {
   function setVolume(value) {
     if (!gainNode || !audioContext) return;
 
-    // Clamp value to valid range
-    const clampedValue = Math.max(0.01, Math.min(1.0, value));
-
-    // Use exponentialRampToValueAtTime for smooth transitions
-    // exponentialRamp cannot reach exactly 0, so minimum is 0.01
     const rampTime = audioContext.currentTime + 0.1;
-    gainNode.gain.exponentialRampToValueAtTime(clampedValue, rampTime);
-
-    // Update previous volume if not muted
-    if (!isMuted) {
-      previousVolume = clampedValue;
+    if (value <= 0.005) {
+      // linearRamp to true zero — exponentialRamp can't reach 0
+      gainNode.gain.linearRampToValueAtTime(0, rampTime);
+    } else {
+      const clamped = Math.min(1.0, value);
+      gainNode.gain.exponentialRampToValueAtTime(clamped, rampTime);
     }
+
+    if (!isMuted) previousVolume = value;
   }
 
   /**
@@ -208,7 +206,6 @@ export function createAudioPlayer(audioElement) {
     trackChangeCallbacks.push(callback);
   }
 
-  // Return public API
   return {
     loadPlaylist,
     initAudio,
@@ -220,6 +217,7 @@ export function createAudioPlayer(audioElement) {
     setVolume,
     toggleMute,
     getState,
-    onTrackChange
+    onTrackChange,
+    getContext: () => audioContext
   };
 }

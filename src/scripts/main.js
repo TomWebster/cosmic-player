@@ -31,8 +31,55 @@ function getUserVolume() { return parseFloat(volumeSlider.value); }
 function duckVolume(level) { player.setVolume(getUserVolume() * level); }
 function restoreVolume() { player.setVolume(getUserVolume()); }
 
-// Track skip — always 1 second, scrub through remaining/elapsed time
-const SKIP_DURATION = 1; // seconds
+// ── Whoosh SFX — filtered white noise burst ──
+let noiseBuffer = null;
+
+function ensureNoiseBuffer(ctx) {
+  if (noiseBuffer) return;
+  const len = ctx.sampleRate * 2; // 2 seconds
+  noiseBuffer = ctx.createBuffer(1, len, ctx.sampleRate);
+  const data = noiseBuffer.getChannelData(0);
+  for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+}
+
+function playWhoosh(dir, duration) {
+  const ctx = player.getContext();
+  if (!ctx) return;
+  ensureNoiseBuffer(ctx);
+
+  const src = ctx.createBufferSource();
+  src.buffer = noiseBuffer;
+
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.Q.value = 1.5;
+
+  const gain = ctx.createGain();
+  const now = ctx.currentTime;
+  const end = now + duration;
+
+  // Filter sweep — forward: low→high, backward: high→low
+  const freqStart = dir > 0 ? 300 : 3000;
+  const freqEnd = dir > 0 ? 3000 : 300;
+  filter.frequency.setValueAtTime(freqStart, now);
+  filter.frequency.exponentialRampToValueAtTime(freqEnd, end);
+
+  // Volume envelope — fade in, sustain, fade out
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.12, now + duration * 0.15);
+  gain.gain.linearRampToValueAtTime(0.10, now + duration * 0.7);
+  gain.gain.linearRampToValueAtTime(0, end);
+
+  src.connect(filter);
+  filter.connect(gain);
+  gain.connect(ctx.destination);
+
+  src.start(now);
+  src.stop(end);
+}
+
+// ── Track skip — 1 second, scrub + whoosh ──
+const SKIP_DURATION = 1;
 let skipInterval = null;
 let skipTimeout = null;
 
@@ -45,9 +92,9 @@ function beginSkip(dir) {
   const timeToSkip = dir > 0 ? (dur - t) : t;
   const scrubRate = timeToSkip / SKIP_DURATION;
 
-  // Fixed high warp — always dramatic
   setWarp(dir > 0 ? 12 : -10);
   duckVolume(0.08);
+  playWhoosh(dir, SKIP_DURATION);
 
   skipInterval = setInterval(() => {
     const step = scrubRate * 0.05 * dir;
@@ -78,7 +125,7 @@ volumeSlider.addEventListener('input', (e) => {
   player.setVolume(parseFloat(e.target.value));
 });
 
-// Scrub — hold to scrub + sustained warp + gentle volume duck
+// ── Scrub — hold to scrub + sustained warp ──
 const SCRUB_RATE = 10;
 let scrubInterval = null;
 
