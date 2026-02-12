@@ -11,23 +11,20 @@
  */
 export function initSplash(enterButton, splashElement, onEnter) {
   // One-time click handler
-  const handleClick = async (event) => {
-    // Prevent default and stop propagation
+  const handleClick = (event) => {
     event.preventDefault();
 
-    try {
-      // Execute the enter callback (creates AudioContext, starts playback)
-      await onEnter();
+    // Remove listener immediately to prevent double-clicks
+    enterButton.removeEventListener('click', handleClick);
 
-      // Hide the splash screen
-      splashElement.classList.add('hidden');
+    // Hide splash and show controls immediately on click
+    splashElement.classList.add('hidden');
 
-      // Remove the event listener to prevent double-clicks
-      enterButton.removeEventListener('click', handleClick);
-    } catch (error) {
-      console.error('Failed to enter:', error);
-      // Keep splash visible if entry fails
-    }
+    // Execute the enter callback (creates AudioContext, starts playback)
+    // Errors are non-fatal — we've already transitioned past the splash
+    Promise.resolve(onEnter()).catch(error => {
+      console.warn('Enter callback error (non-fatal):', error);
+    });
   };
 
   // Attach click listener

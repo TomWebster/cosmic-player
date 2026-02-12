@@ -1,32 +1,130 @@
 {
   "tracks": [
     {
-      "title": "Stellar Drift",
-      "artist": "Cosmic Ensemble",
-      "album": "Infinite Horizons",
-      "duration": 245,
-      "filePath": "/audio/sample-track-01.mp3"
+      "title": "03022023-e3-1",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 345,
+      "filePath": "/audio/03022023-e3-1.mp3"
     },
     {
-      "title": "Nebula Dreams",
-      "artist": "Space Wanderer",
-      "album": "Deep Space Chronicles",
-      "duration": 312,
-      "filePath": "/audio/sample-track-02.mp3"
+      "title": "20220402-covidB",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 515,
+      "filePath": "/audio/20220402-covidB.mp3"
     },
     {
-      "title": "Gravity's Pull",
-      "artist": "Orbital Collective",
-      "album": "The Dark Matter Sessions",
-      "duration": 198,
-      "filePath": "/audio/sample-track-03.mp3"
+      "title": "20240626_1-s3m",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 640,
+      "filePath": "/audio/20240626_1-s3m.mp3"
     },
     {
-      "title": "Cosmic Echoes",
-      "artist": "Void Explorers",
-      "album": "Beyond the Event Horizon",
+      "title": "20250601-e7",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 341,
+      "filePath": "/audio/20250601-e7.mp3"
+    },
+    {
+      "title": "20250709-odnxox-seq3",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
       "duration": 267,
-      "filePath": "/audio/sample-track-04.mp3"
+      "filePath": "/audio/20250709-odnxox-seq3.mp3"
+    },
+    {
+      "title": "20250731-e1",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 640,
+      "filePath": "/audio/20250731-e1.mp3"
+    },
+    {
+      "title": "20250731-e2",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 640,
+      "filePath": "/audio/20250731-e2.mp3"
+    },
+    {
+      "title": "20250731-e3",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 640,
+      "filePath": "/audio/20250731-e3.mp3"
+    },
+    {
+      "title": "20250802-e2",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 618,
+      "filePath": "/audio/20250802-e2.mp3"
+    },
+    {
+      "title": "20250804-e2",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 379,
+      "filePath": "/audio/20250804-e2.mp3"
+    },
+    {
+      "title": "20251220-JT1-e5",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 427,
+      "filePath": "/audio/20251220-JT1-e5.mp3"
+    },
+    {
+      "title": "20260103_1",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 291,
+      "filePath": "/audio/20260103_1.mp3"
+    },
+    {
+      "title": "20260130_1-e3",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 410,
+      "filePath": "/audio/20260130_1-e3.mp3"
+    },
+    {
+      "title": "20260201_212013-s2",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 533,
+      "filePath": "/audio/20260201_212013-s2.mp3"
+    },
+    {
+      "title": "HorrorExpress_20220403",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 442,
+      "filePath": "/audio/HorrorExpress_20220403.mp3"
+    },
+    {
+      "title": "MurderInc-1-e2",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 466,
+      "filePath": "/audio/MurderInc-1-e2.mp3"
+    },
+    {
+      "title": "x0x - live",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 512,
+      "filePath": "/audio/x0x - live.mp3"
+    },
+    {
+      "title": "x0x (20250802-e1)",
+      "artist": "Unknown",
+      "album": "Cosmic Player",
+      "duration": 205,
+      "filePath": "/audio/x0x (20250802-e1).mp3"
     }
   ]
 }

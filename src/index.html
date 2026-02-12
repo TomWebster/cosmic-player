@@ -20,10 +20,17 @@
 
   <!-- Controls (initially hidden) -->
   <div id="controls" class="hidden">
-    <button id="prev-btn">Previous</button>
-    <button id="next-btn">Next</button>
-    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" aria-label="Volume">
-    <button id="mute-btn">Mute</button>
+    <div id="controls-buttons">
+      <button id="prev-btn">Previous</button>
+      <button id="next-btn">Next</button>
+    </div>
+    <div id="controls-buttons">
+      <button id="scrub-back-btn">&lt;&lt;</button>
+      <button id="scrub-fwd-btn">&gt;&gt;</button>
+    </div>
+    <div id="controls-slider">
+      <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" aria-label="Volume">
+    </div>
   </div>
 
   <!-- Scripts loaded as ES modules -->
