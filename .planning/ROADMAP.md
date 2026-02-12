@@ -12,7 +12,7 @@ The Cosmic Player roadmap delivers an immersive web audio player in four phases.
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Audio Playback** - Entry mechanism, audio engine, playlist management, playback controls
+- [x] **Phase 1: Foundation & Audio Playback** - Entry mechanism, audio engine, playlist management, playback controls
 - [ ] **Phase 2: Canvas Scene & Animation** - Multi-layer space scene with parallax animation
 - [ ] **Phase 3: Audio Visualization** - Audio-reactive visual modulation
 - [ ] **Phase 4: Track Info & Polish** - Metadata display and final refinements
@@ -36,8 +36,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Project foundation: HTML scaffold, CSS layout, playlist JSON, DPI-aware canvas renderer
-- [ ] 01-02-PLAN.md — Audio playback engine, splash screen integration, control wiring, human verification
+- [x] 01-01-PLAN.md — Project foundation: HTML scaffold, CSS layout, playlist JSON, DPI-aware canvas renderer
+- [x] 01-02-PLAN.md — Audio playback engine, splash screen integration, control wiring, human verification
 
 ### Phase 2: Canvas Scene & Animation
 **Goal**: Full-viewport animated cosmic scene renders smoothly without audio integration
@@ -98,7 +98,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Audio Playback | 0/2 | Planning complete | - |
+| 1. Foundation & Audio Playback | 2/2 | ✓ Complete | 2026-02-12 |
 | 2. Canvas Scene & Animation | 0/TBD | Not started | - |
 | 3. Audio Visualization | 0/TBD | Not started | - |
 | 4. Track Info & Polish | 0/TBD | Not started | - |
