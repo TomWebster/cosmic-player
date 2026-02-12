@@ -200,8 +200,8 @@ export function initCanvas() {
   // Handle window resize
   window.addEventListener('resize', setupCanvas);
 
-  // Start animation loop
-  animate();
+  // Start animation loop (must go through rAF to get a valid timestamp)
+  requestAnimationFrame(animate);
 
   return { canvas, ctx };
 }
