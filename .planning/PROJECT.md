@@ -41,9 +41,9 @@ The moment you enter, you're transported — music and visuals fuse into a singl
 ## Context
 
 - **Music source:** Apple Music Library XML parsed by Python toolchain at `/Users/tomw/Claude/appleMusicTools`. This project extracts track metadata (name, artist, album, genre, duration, file paths) from iTunes/Music Library XML files.
-- **Audio formats:** Mix of MPEG and AAC files from Apple Music Library (mp3, m4a)
+- **Audio formats:** Mix of formats from Apple Music Library — mp3, m4a, wav, aiff, and potentially others. Player should handle any browser-supported audio format.
 - **Music character:** Electronic/techno (606 drums, breaks, 150bpm), Detroit, 3rd wave UK hardcore, experimental guitar (Robert Fripp, Ozric Tentacles, Hendrix, Clapton, Miles Davis). Not dancefloor — atmospheric intensity.
-- **Visual reference:** Apple Sequoia screensavers as a motion/pacing reference, but much darker. The space scene is not abstract generative art — it's a specific composition: infinite blackness, a large planet with Saturn's coloring, two khaki moons, a distant sun, and sparse bright stars. Slow parallax drift.
+- **Visual reference:** Three key influences: (1) The 80s BBC Micro game Elite — vast sparse emptiness of space, minimal elements, sense of scale and solitude. (2) macOS screensavers (Sequoia era) — smooth ambient motion, slow parallax drift, atmospheric pacing. (3) The Designers Republic — clean futuristic graphic design aesthetic, geometric precision, Warp Records visual language. The space scene is a specific composition: infinite blackness, a large planet with Saturn's coloring, two subtle khaki moons, a distant sun, and sparse bright stars.
 - **Browser autoplay policy:** Requires user interaction before audio can play — solved by click-to-enter splash.
 - **Web Audio API:** Needed for audio analysis (frequency/amplitude data) to drive subtle visual reactivity.
 
