@@ -98,38 +98,38 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ENTR-01 | — | Pending |
-| ENTR-02 | — | Pending |
-| ENTR-03 | — | Pending |
-| PLAY-01 | — | Pending |
-| PLAY-02 | — | Pending |
-| PLAY-03 | — | Pending |
-| PLAY-04 | — | Pending |
-| PLAY-05 | — | Pending |
-| PLAY-06 | — | Pending |
-| PLAY-07 | — | Pending |
-| SCNE-01 | — | Pending |
-| SCNE-02 | — | Pending |
-| SCNE-03 | — | Pending |
-| SCNE-04 | — | Pending |
-| SCNE-05 | — | Pending |
-| SCNE-06 | — | Pending |
-| SCNE-07 | — | Pending |
-| REAC-01 | — | Pending |
-| REAC-02 | — | Pending |
-| REAC-03 | — | Pending |
-| REAC-04 | — | Pending |
-| REAC-05 | — | Pending |
-| INFO-01 | — | Pending |
-| INFO-02 | — | Pending |
-| DATA-01 | — | Pending |
-| DATA-02 | — | Pending |
+| ENTR-01 | Phase 1 | Pending |
+| ENTR-02 | Phase 1 | Pending |
+| ENTR-03 | Phase 1 | Pending |
+| PLAY-01 | Phase 1 | Pending |
+| PLAY-02 | Phase 1 | Pending |
+| PLAY-03 | Phase 1 | Pending |
+| PLAY-04 | Phase 1 | Pending |
+| PLAY-05 | Phase 1 | Pending |
+| PLAY-06 | Phase 1 | Pending |
+| PLAY-07 | Phase 1 | Pending |
+| DATA-01 | Phase 1 | Pending |
+| DATA-02 | Phase 1 | Pending |
+| SCNE-01 | Phase 2 | Pending |
+| SCNE-02 | Phase 2 | Pending |
+| SCNE-03 | Phase 2 | Pending |
+| SCNE-04 | Phase 2 | Pending |
+| SCNE-05 | Phase 2 | Pending |
+| SCNE-06 | Phase 2 | Pending |
+| SCNE-07 | Phase 2 | Pending |
+| REAC-01 | Phase 3 | Pending |
+| REAC-02 | Phase 3 | Pending |
+| REAC-03 | Phase 3 | Pending |
+| REAC-04 | Phase 3 | Pending |
+| REAC-05 | Phase 3 | Pending |
+| INFO-01 | Phase 4 | Pending |
+| INFO-02 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 26 total
-- Mapped to phases: 0
-- Unmapped: 26 (pending roadmap creation)
+- Mapped to phases: 26
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-12*
-*Last updated: 2026-02-12 after initial definition*
+*Last updated: 2026-02-12 after roadmap creation*
