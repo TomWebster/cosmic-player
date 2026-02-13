@@ -7,33 +7,29 @@
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-  <!-- Fullscreen canvas background -->
   <canvas id="canvas"></canvas>
 
-  <!-- Splash screen overlay -->
   <div id="splash">
     <button id="enter-button">Enter</button>
   </div>
 
-  <!-- Hidden audio element (no native controls) -->
   <audio id="audio-player"></audio>
 
-  <!-- Controls (initially hidden) -->
   <div id="controls" class="hidden">
-    <div id="controls-buttons">
+    <button id="shuffle-btn">Shuffle</button>
+    <div class="controls-row">
       <button id="prev-btn">Previous</button>
       <button id="next-btn">Next</button>
     </div>
-    <div id="controls-buttons">
+    <div class="controls-row">
       <button id="scrub-back-btn">&lt;&lt;</button>
       <button id="scrub-fwd-btn">&gt;&gt;</button>
     </div>
-    <div id="controls-slider">
+    <div class="controls-row">
       <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" aria-label="Volume">
     </div>
   </div>
 
-  <!-- Scripts loaded as ES modules -->
   <script type="module" src="scripts/main.js"></script>
 </body>
 </html>
