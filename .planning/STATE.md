@@ -4,18 +4,19 @@
 
 See: .planning/PROJECT.md (updated 2026-02-12)
 
-**Core value:** The moment you enter, you're transported — music and visuals fuse into a single immersive experience that holds you.
+**Core value:** The moment you enter, you're transported — music and visuals fuse into a single immersive experience that holds you. Skip a track and the stars streak past like hyperspace.
 
-**Current focus:** Phase 2 - Canvas Scene & Animation
+**Current focus:** Basic working state reached. Next: Phase 3 (Front-End Polish) and Phase 4 (Cloudflare Audio & Auto-Playlists)
 
 ## Current Position
 
-Phase: 2 of 4 (Canvas Scene & Animation)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-02-12 — Completed 02-01-PLAN.md
+Phase: 2 of 4 complete (Starfield & Warp)
+Status: Basic working state reached
+Last activity: 2026-02-13 — Roadmap updated, track info dropped, new phases added
 
-Progress: [███░░░░░░░] 38%
+Progress: [█████░░░░░] 50%
+
+**Note:** Direction changed from original plan. Cosmic scene replaced with starfield + warp. Audio visualization removed. Track info dropped. New focus: FE polish + Cloudflare audio hosting + auto-playlists.
 
 ## Performance Metrics
 
@@ -29,7 +30,7 @@ Progress: [███░░░░░░░] 38%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation-audio-playback | 2 | 220s | 110s |
-| 02-canvas-scene-animation | 1 | 136s | 136s |
+| 02-starfield-warp | 2 | — | — |
 
 **Recent Plans:**
 | Phase | Plan | Duration | Tasks | Files |
@@ -57,10 +58,10 @@ Recent decisions affecting current work:
 - [01-02]: exponentialRampToValueAtTime for smooth volume transitions
 - [01-02]: Mute control removed per user preference
 - [01-02]: CSS .hidden needs !important to override ID selectors
-- [02-01]: Uniform random star distribution for sparse Elite aesthetic (not biased center)
-- [02-01]: Extended canvas area (1.5x viewport) to prevent parallax drift edge gaps
-- [02-01]: Math.floor() on arc coordinates to avoid sub-pixel anti-aliasing overhead
-- [02-01]: Radial gradient highlight offset (-0.3 radius) for 3D sphere lighting
+- [02]: Direction change — forward-flying starfield replaces layered cosmic scene (planet/moons/sun)
+- [02]: Warp-on-skip interaction model replaces audio-reactive visuals
+- [02]: Whoosh SFX (filtered white noise) on skip and sustained on scrub
+- [02]: Volume ducking during warp transitions for audio clarity
 
 ### Pending Todos
 
@@ -72,6 +73,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-12
-Stopped at: Completed 02-01-PLAN.md (static cosmic scene rendering)
+Last session: 2026-02-13
+Stopped at: Roadmap revised — dropped track info, added FE polish + Cloudflare phases. Ready for Phase 3 or 4.
 Resume file: None

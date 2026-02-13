@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Cosmic Player roadmap delivers an immersive web audio player in four phases. Phase 1 establishes the foundation with working audio playback and user gesture-based initialization. Phase 2 builds the animated cosmic scene with multi-layer canvas rendering. Phase 3 integrates audio analysis with visual reactivity to create the core differentiator. Phase 4 adds track metadata display and final polish. Each phase delivers a coherent, verifiable capability that builds toward the complete immersive experience.
+The Cosmic Player roadmap delivers an immersive web audio player. Phases 1-2 are complete — the basic working state is reached: click-to-enter splash, forward-flying starfield with warp effects on skip/scrub, full audio playback with playlist, volume, and shuffle. Remaining work focuses on front-end polish and moving to Cloudflare-hosted audio with auto-updating playlists.
 
 ## Phases
 
@@ -13,9 +13,9 @@ The Cosmic Player roadmap delivers an immersive web audio player in four phases.
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Audio Playback** - Entry mechanism, audio engine, playlist management, playback controls
-- [ ] **Phase 2: Canvas Scene & Animation** - Multi-layer space scene with parallax animation
-- [ ] **Phase 3: Audio Visualization** - Audio-reactive visual modulation
-- [ ] **Phase 4: Track Info & Polish** - Metadata display and final refinements
+- [x] **Phase 2: Starfield & Warp** - Forward-flying starfield animation, warp effects on skip/scrub/shuffle, whoosh SFX
+- [ ] **Phase 3: Front-End Polish** - Visual refinements, UX improvements, responsive behavior
+- [ ] **Phase 4: Cloudflare Audio & Auto-Playlists** - Upload audio to Cloudflare, auto-update playlist from appleMusicTools pipeline
 
 ## Phase Details
 
@@ -39,53 +39,51 @@ Plans:
 - [x] 01-01-PLAN.md — Project foundation: HTML scaffold, CSS layout, playlist JSON, DPI-aware canvas renderer
 - [x] 01-02-PLAN.md — Audio playback engine, splash screen integration, control wiring, human verification
 
-### Phase 2: Canvas Scene & Animation
-**Goal**: Full-viewport animated cosmic scene renders smoothly without audio integration
+### Phase 2: Starfield & Warp
+**Goal**: Forward-flying starfield with warp effects tied to playback controls
 
 **Depends on**: Phase 1
 
-**Requirements**: SCNE-01, SCNE-02, SCNE-03, SCNE-04, SCNE-05, SCNE-06, SCNE-07
+**Status**: Complete (direction changed from original cosmic scene plan)
 
-**Success Criteria** (what must be TRUE):
-  1. Infinite black space backdrop fills the entire viewport with no visible seams
-  2. Sparse bright starfield, Saturn-colored planet, two khaki moons, and distant sun are all visible and positioned correctly
-  3. Scene elements drift with slow parallax motion at different layer speeds
-  4. Animation maintains smooth 60fps performance while audio plays
+**What was built** (differs from original plan):
+  - Forward-flying starfield with 3D perspective projection (400 stars, focal length projection)
+  - Warp speed multiplier on track skip (<< / >>) — stars streak into hyperspace with directional whoosh SFX
+  - Hold-to-scrub with sustained warp and quiet looping whoosh
+  - Shuffle triggers forward warp to random track
+  - Volume ducking during warp transitions
+  - Delta-time animation, clamped to prevent tab-backgrounding jumps
 
-**Plans:** 2 plans
+**Original plan was**: Layered 2D cosmic scene (planet, moons, sun, parallax drift). Replaced with starfield + warp which better serves the interaction model.
 
 Plans:
-- [ ] 02-01-PLAN.md — Static space scene: scene data model with layer definitions, full scene rendering (stars, planet, moons, sun)
-- [ ] 02-02-PLAN.md — Parallax animation: delta-time drift at different layer speeds, edge wrapping, human visual verification
+- [x] 02-01-PLAN.md — Initial scene data model and rendering (superseded by starfield rewrite)
+- [x] 02-02-PLAN.md — Superseded: warp animation + skip/scrub integration built outside plan
 
-### Phase 3: Audio Visualization
-**Goal**: Visuals react subtly to music in real-time, creating the immersive audio-visual fusion
+### Phase 3: Front-End Polish
+**Goal**: Refine the visual experience and UX to feel finished and polished
 
 **Depends on**: Phase 2
 
-**Requirements**: REAC-01, REAC-02, REAC-03, REAC-04, REAC-05
-
 **Success Criteria** (what must be TRUE):
-  1. Stars pulse gently in brightness as music plays
-  2. Planet glow modulates softly in response to bass frequencies
-  3. Visual reactions feel atmospheric and slow, never fast or twitchy
-  4. Audio-visual sync is tight with no perceptible lag or jitter
+  1. Visual experience feels polished and intentional
+  2. Controls are intuitive and responsive
+  3. Works well across screen sizes
 
 **Plans**: TBD
 
 Plans:
 - [ ] TBD during phase planning
 
-### Phase 4: Track Info & Polish
-**Goal**: Current track metadata is visible during playback, completing the experience
+### Phase 4: Cloudflare Audio & Auto-Playlists
+**Goal**: Audio files hosted on Cloudflare, playlist auto-updates from appleMusicTools pipeline
 
-**Depends on**: Phase 3
-
-**Requirements**: INFO-01, INFO-02
+**Depends on**: Phase 3 (can potentially run in parallel)
 
 **Success Criteria** (what must be TRUE):
-  1. Current track title and artist are displayed on screen during playback
-  2. Track info updates correctly when user skips to next/previous track
+  1. Audio files served from Cloudflare instead of local filesystem
+  2. Playlist data auto-updates when appleMusicTools pipeline runs
+  3. No manual file copying or playlist editing needed to update the site
 
 **Plans**: TBD
 
@@ -100,6 +98,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Audio Playback | 2/2 | ✓ Complete | 2026-02-12 |
-| 2. Canvas Scene & Animation | 0/2 | In progress | - |
-| 3. Audio Visualization | 0/TBD | Not started | - |
-| 4. Track Info & Polish | 0/TBD | Not started | - |
+| 2. Starfield & Warp | 2/2 | ✓ Complete (direction changed) | 2026-02-13 |
+| 3. Front-End Polish | 0/TBD | Not started | - |
+| 4. Cloudflare Audio & Auto-Playlists | 0/TBD | Not started | - |

@@ -17,8 +17,9 @@ let warpCurrent = 1;
 
 function setupCanvas() {
   const dpr = window.devicePixelRatio || 1;
-  vw = window.innerWidth;
-  vh = window.innerHeight;
+  const vp = window.visualViewport;
+  vw = vp ? vp.width : document.documentElement.clientWidth;
+  vh = vp ? vp.height : document.documentElement.clientHeight;
   canvas.width = vw * dpr;
   canvas.height = vh * dpr;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -117,6 +118,9 @@ export function initCanvas() {
   ctx = canvas.getContext('2d');
   setupCanvas();
   window.addEventListener('resize', setupCanvas);
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', setupCanvas);
+  }
   requestAnimationFrame(animate);
   return { canvas, ctx };
 }

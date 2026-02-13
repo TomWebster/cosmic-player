@@ -206,12 +206,14 @@ function endScrub() {
 
 const scrubBack = document.getElementById('scrub-back-btn');
 const scrubFwd = document.getElementById('scrub-fwd-btn');
-scrubBack.addEventListener('mousedown', () => beginScrub(-1));
-scrubBack.addEventListener('mouseup', endScrub);
-scrubBack.addEventListener('mouseleave', endScrub);
-scrubFwd.addEventListener('mousedown', () => beginScrub(1));
-scrubFwd.addEventListener('mouseup', endScrub);
-scrubFwd.addEventListener('mouseleave', endScrub);
+scrubBack.addEventListener('pointerdown', (e) => { e.preventDefault(); beginScrub(-1); });
+scrubBack.addEventListener('pointerup', endScrub);
+scrubBack.addEventListener('pointerleave', endScrub);
+scrubBack.addEventListener('pointercancel', endScrub);
+scrubFwd.addEventListener('pointerdown', (e) => { e.preventDefault(); beginScrub(1); });
+scrubFwd.addEventListener('pointerup', endScrub);
+scrubFwd.addEventListener('pointerleave', endScrub);
+scrubFwd.addEventListener('pointercancel', endScrub);
 
 player.onTrackChange((track) => {
   console.log(`Now playing: ${track.title} - ${track.artist}`);
