@@ -1,18 +1,26 @@
 /**
- * Scene Data Model
- * Starfield with forward-flying camera through space
+ * Scene Data Model — generates the starfield.
+ *
+ * Stars are positioned in 3D space with random x/y spread (4× viewport)
+ * and random z depth (0 to maxDepth). Each star has a brightness value
+ * that stays fixed — the renderer uses depth-based alpha for fading.
+ *
+ * The spread factor (4×) ensures stars fill the screen at all depths
+ * even with perspective projection narrowing the visible field.
  */
+
+const STAR_COUNT = 400;
+const MAX_DEPTH = 1500;
 
 /**
- * Create the starfield scene
+ * Creates a new starfield with randomly positioned stars.
+ * Called on init and on resize (stars are regenerated to fit new viewport).
+ *
  * @param {number} width - Logical viewport width (CSS pixels)
  * @param {number} height - Logical viewport height (CSS pixels)
- * @returns {Object} Scene data with stars positioned in 3D space
+ * @returns {{ stars: Array<{x: number, y: number, z: number, brightness: number}>, maxDepth: number }}
  */
 export function createScene(width, height) {
-  const STAR_COUNT = 400;
-  const MAX_DEPTH = 1500;
-
   const stars = [];
   for (let i = 0; i < STAR_COUNT; i++) {
     stars.push({
@@ -22,6 +30,5 @@ export function createScene(width, height) {
       brightness: 0.4 + Math.random() * 0.6
     });
   }
-
   return { stars, maxDepth: MAX_DEPTH };
 }

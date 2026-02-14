@@ -1,32 +1,33 @@
 /**
  * Splash Screen Module
- * Handles the click-to-enter transition and AudioContext initialization trigger
+ *
+ * Handles the click-to-enter transition. This exists because browsers
+ * require a user gesture before creating an AudioContext or playing audio.
+ * The splash also creates an intentional "threshold" moment before immersion.
  */
 
 /**
- * Initializes the splash screen with click-to-enter behavior
- * @param {HTMLElement} enterButton - The button element to click
- * @param {HTMLElement} splashElement - The splash container element
- * @param {Function} onEnter - Async callback to invoke on enter (handles AudioContext creation)
+ * Attaches a one-time click handler that hides the splash and invokes the
+ * enter callback (which creates the AudioContext and starts playback).
+ *
+ * @param {HTMLElement} enterButton - The button to click
+ * @param {HTMLElement} splashElement - The splash overlay to hide
+ * @param {Function} onEnter - Async callback invoked on enter (non-fatal if it throws)
  */
 export function initSplash(enterButton, splashElement, onEnter) {
-  // One-time click handler
   const handleClick = (event) => {
     event.preventDefault();
 
-    // Remove listener immediately to prevent double-clicks
+    // Remove immediately to prevent double-triggers
     enterButton.removeEventListener('click', handleClick);
 
-    // Hide splash and show controls immediately on click
+    // Transition past splash — even if audio init fails, we don't go back
     splashElement.classList.add('hidden');
 
-    // Execute the enter callback (creates AudioContext, starts playback)
-    // Errors are non-fatal — we've already transitioned past the splash
     Promise.resolve(onEnter()).catch(error => {
       console.warn('Enter callback error (non-fatal):', error);
     });
   };
 
-  // Attach click listener
   enterButton.addEventListener('click', handleClick);
 }

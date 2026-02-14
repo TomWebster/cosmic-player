@@ -1,39 +1,45 @@
 /**
  * Audio Player Module
- * Hybrid HTML5 Audio + Web Audio API architecture for streaming playback with precise volume control
+ *
+ * Hybrid HTML5 Audio + Web Audio API architecture:
+ * - HTML5 <audio> handles format negotiation, streaming, and playback control
+ * - Web Audio GainNode provides smooth volume ramping (avoids pops/clicks)
+ *
+ * The AudioContext MUST be created inside a user gesture (click) to satisfy
+ * browser autoplay policy. Call initAudio() from a click handler.
+ *
+ * Audio graph: <audio> → MediaElementSource → GainNode → destination
  */
 
 /**
- * Creates an audio player instance with playlist management and Web Audio API integration
+ * Creates an audio player instance with playlist management and Web Audio API integration.
+ * Uses the revealing module pattern — all state is private, public API returned at the end.
+ *
  * @param {HTMLAudioElement} audioElement - The HTML audio element to use for playback
- * @returns {Object} Player instance with control methods
+ * @returns {Object} Player API: loadPlaylist, initAudio, loadTrack, play, playTrack,
+ *                   nextTrack, previousTrack, setVolume, getState, onTrackChange, getContext
  */
 export function createAudioPlayer(audioElement) {
-  // Internal state
   let playlist = [];
   let currentIndex = 0;
   let audioContext = null;
   let gainNode = null;
   let source = null;
-  let isMuted = false;
-  let previousVolume = 0.5;
   const trackChangeCallbacks = [];
 
   /**
-   * Loads the playlist from JSON file
-   * @returns {Promise<Array>} The loaded playlist
+   * Fetches playlist data from the server.
+   * Expected format: { tracks: [{ title, artist, album, duration, filePath }] }
+   * @returns {Promise<Array>} The loaded track list
    */
   async function loadPlaylist() {
     try {
       const response = await fetch('/data/playlist.json');
-
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: Failed to load playlist`);
       }
-
       const data = await response.json();
       playlist = data.tracks;
-
       console.log(`Playlist loaded: ${playlist.length} tracks`);
       return playlist;
     } catch (error) {
@@ -43,28 +49,26 @@ export function createAudioPlayer(audioElement) {
   }
 
   /**
-   * Initializes Web Audio API components
-   * MUST be called inside a user gesture handler (e.g., click event)
+   * Initializes Web Audio API — creates AudioContext and wires the audio graph.
+   * MUST be called inside a user gesture handler (click/tap) or the browser will block it.
    * @returns {AudioContext} The created audio context
    */
   function initAudio() {
-    // Create AudioContext (requires user gesture)
     audioContext = new AudioContext();
 
-    // Create MediaElementSource from HTML audio element
+    // Bridge HTML5 audio into Web Audio graph
     source = audioContext.createMediaElementSource(audioElement);
 
-    // Create GainNode for volume control
+    // GainNode provides smooth volume control with ramp functions
     gainNode = audioContext.createGain();
-    gainNode.gain.value = 0.5; // Start at 50% volume
+    gainNode.gain.value = 0.5;
 
-    // Connect audio chain: source -> gainNode -> destination
+    // Wire: source → gain → speakers
     source.connect(gainNode);
     gainNode.connect(audioContext.destination);
 
-    // Setup auto-advance on track end
+    // Auto-advance: when a track ends, play the next one (wraps around)
     audioElement.addEventListener('ended', () => {
-      // Move to next track with wrap-around
       currentIndex = (currentIndex + 1) % playlist.length;
       loadTrack(currentIndex);
       play();
@@ -75,40 +79,29 @@ export function createAudioPlayer(audioElement) {
   }
 
   /**
-   * Loads a track by index
+   * Sets the audio source to a specific track and notifies listeners.
    * @param {number} index - Track index in playlist
    * @returns {Object} The loaded track object
    */
   function loadTrack(index) {
     currentIndex = index;
     const track = playlist[currentIndex];
-
     audioElement.src = track.filePath;
 
-    // Notify listeners of track change
-    trackChangeCallbacks.forEach(callback => {
-      try {
-        callback(track);
-      } catch (error) {
-        console.error('Track change callback error:', error);
-      }
-    });
-
+    // Notify all registered track-change listeners
+    for (const cb of trackChangeCallbacks) {
+      try { cb(track); } catch (e) { console.error('Track change callback error:', e); }
+    }
     return track;
   }
 
   /**
-   * Starts playback of the current track
-   * @returns {Promise<void>}
+   * Starts or resumes playback. Handles AudioContext suspension (happens when
+   * the browser suspends audio after a period of inactivity).
    */
   async function play() {
     try {
-      // Resume AudioContext if suspended
-      if (audioContext && audioContext.state === 'suspended') {
-        await audioContext.resume();
-      }
-
-      // Start playback
+      if (audioContext?.state === 'suspended') await audioContext.resume();
       await audioElement.play();
     } catch (error) {
       console.warn('Playback failed:', error.message);
@@ -116,96 +109,59 @@ export function createAudioPlayer(audioElement) {
     }
   }
 
-  /**
-   * Loads and plays a specific track
-   * @param {number} index - Track index in playlist
-   * @returns {Promise<void>}
-   */
+  /** Loads and plays a specific track by index. */
   async function playTrack(index) {
     loadTrack(index);
     await play();
   }
 
-  /**
-   * Advances to the next track
-   * @returns {Promise<void>}
-   */
+  /** Advances to the next track (wraps to first after last). */
   async function nextTrack() {
     currentIndex = (currentIndex + 1) % playlist.length;
     await playTrack(currentIndex);
   }
 
-  /**
-   * Goes back to the previous track
-   * @returns {Promise<void>}
-   */
+  /** Goes to the previous track (wraps to last before first). */
   async function previousTrack() {
     currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
     await playTrack(currentIndex);
   }
 
   /**
-   * Sets the volume with smooth ramping to avoid audio pops
-   * @param {number} value - Volume level (0.0 to 1.0)
+   * Sets volume with smooth ramping to prevent audible pops.
+   * Uses exponentialRamp for normal values and linearRamp near zero
+   * because exponentialRamp mathematically cannot reach 0.
+   *
+   * @param {number} value - Volume level 0.0 (silent) to 1.0 (full)
    */
   function setVolume(value) {
     if (!gainNode || !audioContext) return;
-
     const rampTime = audioContext.currentTime + 0.1;
     if (value <= 0.005) {
-      // linearRamp to true zero — exponentialRamp can't reach 0
       gainNode.gain.linearRampToValueAtTime(0, rampTime);
     } else {
-      const clamped = Math.min(1.0, value);
-      gainNode.gain.exponentialRampToValueAtTime(clamped, rampTime);
+      gainNode.gain.exponentialRampToValueAtTime(Math.min(1.0, value), rampTime);
     }
-
-    if (!isMuted) previousVolume = value;
   }
 
-  /**
-   * Toggles mute state
-   * @returns {boolean} Current muted state
-   */
-  function toggleMute() {
-    if (!gainNode || !audioContext) return isMuted;
-
-    if (isMuted) {
-      // Unmute: restore previous volume
-      setVolume(previousVolume);
-      isMuted = false;
-    } else {
-      // Mute: save current volume and ramp to near-zero
-      previousVolume = gainNode.gain.value;
-      const rampTime = audioContext.currentTime + 0.1;
-      gainNode.gain.exponentialRampToValueAtTime(0.01, rampTime);
-      isMuted = true;
-    }
-
-    return isMuted;
-  }
-
-  /**
-   * Gets the current player state
-   * @returns {Object} Current state including track info and settings
-   */
+  /** Returns a snapshot of the current player state. */
   function getState() {
     return {
       currentIndex,
       currentTrack: playlist[currentIndex] || null,
-      isMuted,
       playlist
     };
   }
 
   /**
-   * Registers a callback for track changes
-   * @param {Function} callback - Function to call when track changes
+   * Registers a callback invoked whenever the track changes.
+   * @param {Function} callback - Receives the new track object
    */
   function onTrackChange(callback) {
     trackChangeCallbacks.push(callback);
   }
 
+  // Public API
   return {
     loadPlaylist,
     initAudio,
@@ -215,7 +171,6 @@ export function createAudioPlayer(audioElement) {
     nextTrack,
     previousTrack,
     setVolume,
-    toggleMute,
     getState,
     onTrackChange,
     getContext: () => audioContext
